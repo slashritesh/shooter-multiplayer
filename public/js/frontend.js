@@ -3,12 +3,13 @@ const c = canvas.getContext('2d')
 
 const socket = io()
 
+
 const scoreEl = document.querySelector('#scoreEl')
 
 const devicePixelRatio = window.devicePixelRatio || 1
 
-canvas.width = 1024 * devicePixelRatio
-canvas.height = 576 * devicePixelRatio
+canvas.width = 1020 * devicePixelRatio
+canvas.height = 580 * devicePixelRatio
 
 c.scale(devicePixelRatio, devicePixelRatio)
 
@@ -18,11 +19,13 @@ const y = canvas.height / 2
 const frontEndPlayers = {}
 const frontEndProjectiles = {}
 
+
 socket.on('updateProjectiles', (backEndProjectiles) => {
   for (const id in backEndProjectiles) {
     const backEndProjectile = backEndProjectiles[id]
 
     if (!frontEndProjectiles[id]) {
+      
       frontEndProjectiles[id] = new Projectile({
         x: backEndProjectile.x,
         y: backEndProjectile.y,
@@ -30,6 +33,9 @@ socket.on('updateProjectiles', (backEndProjectiles) => {
         color: frontEndPlayers[backEndProjectile.playerId]?.color,
         velocity: backEndProjectile.velocity
       })
+      const shoot = new Audio()
+      shoot.src = "../music/shoot.wav"
+      shoot.play()
     } else {
       frontEndProjectiles[id].x += backEndProjectiles[id].velocity.x
       frontEndProjectiles[id].y += backEndProjectiles[id].velocity.y
@@ -51,7 +57,7 @@ socket.on('updatePlayers', (backEndPlayers) => {
       frontEndPlayers[id] = new Player({
         x: backEndPlayer.x,
         y: backEndPlayer.y,
-        radius: 10,
+        radius: 8,
         color: backEndPlayer.color,
         username: backEndPlayer.username
       })
@@ -119,7 +125,9 @@ socket.on('updatePlayers', (backEndPlayers) => {
       if (id === socket.id) {
         document.querySelector('#usernameForm').style.display = 'block'
       }
-
+      const collide = new Audio()
+      collide.src = '../music/collide.wav'
+      collide.play()
       delete frontEndPlayers[id]
     }
   }

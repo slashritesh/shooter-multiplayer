@@ -1,3 +1,5 @@
+
+
 class Projectile {
   constructor({ x, y, radius, color = 'white', velocity }) {
     this.x = x
@@ -6,6 +8,7 @@ class Projectile {
     this.color = color
     this.velocity = velocity
   }
+
 
   draw() {
     c.save()

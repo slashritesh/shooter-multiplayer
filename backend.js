@@ -1,13 +1,17 @@
 const express = require('express')
 const app = express()
-
+const dotenv = require('dotenv')
+dotenv.config()
 // socket.io setup
 const http = require('http')
 const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 })
 
-const port = 3000
+const port = process.env.PORT || 3000
+
+
+
 
 app.use(express.static('public'))
 
@@ -151,6 +155,7 @@ setInterval(() => {
           backEndPlayers[backEndProjectiles[id].playerId].score++
 
         console.log(backEndPlayers[backEndProjectiles[id].playerId])
+        
         delete backEndProjectiles[id]
         delete backEndPlayers[playerId]
         break
